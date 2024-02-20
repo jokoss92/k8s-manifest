@@ -2,11 +2,9 @@ pipeline {
     agent any
     environment {
         NOTIF = credentials('notif-discord')
+        GITHUB_PAT = credentials('github-account')
     }
     stages {
-        environment {
-            GITHUB_PAT = credentials('github-account')
-            }
         stage('Clone Repository'){
             steps {
                 echo 'Clone repository'
