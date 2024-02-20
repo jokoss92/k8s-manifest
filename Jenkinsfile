@@ -1,7 +1,5 @@
 pipeline {
-    agent {
-        label 'agent01'
-    }
+    agent any
     environment {
         NOTIF = credentials('notif-discord')
     }
@@ -14,11 +12,19 @@ pipeline {
             }
         }
         stage('Update Git'){
+            environment {
+                GITHUB_PAT = credentials('github-account')
+            }
             steps {
                 echo 'Update Git'
                 sh 'cat deployment.yml'
                 sh "sed -i 's/api-server:/api-server:${BUILD_NUMBER}/g' deployment.yml"
                 sh 'cat deployment.yml'
+                sh 'git config user.email "johno.smakaduta@gmail.com"'
+                sh 'git config user.name "Joko Sarjono S"'
+                sh 'git add .'
+                sh 'git commit -m "Done by Jenkins Job change manifest: ${env.BUILD_NUMBER}"'
+                sh 'git push https://jokoss92:${GITHUB_PAT}@github.com/jokoss92/k8s-manifest.git HEAD:main'
             }
         }
     }
