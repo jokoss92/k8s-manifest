@@ -18,7 +18,7 @@ pipeline {
             steps {
                 echo 'Update Git'
                 sh 'cat deployment.yml'
-                sh "sed -i 's/api-server:/api-server:${BUILD_NUMBER}/g' deployment.yml"
+                sh "sed -i 's/api-server:latest/api-server:${DOCKERTAG}/g' deployment.yml"
                 sh 'cat deployment.yml'
                 sh 'git config user.email "johno.smakaduta@gmail.com"'
                 sh 'git config user.name "Joko Sarjono S"'
