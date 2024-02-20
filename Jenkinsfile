@@ -24,7 +24,8 @@ pipeline {
                 sh 'git config user.name "Joko Sarjono S"'
                 sh 'git add .'
                 sh 'git commit -m "Done by Jenkins Job change manifest ${DOCKERTAG}"'
-                sh 'git push https://jokoss92:${GITHUB_PAT}@github.com/jokoss92/k8s-manifest.git HEAD:main'
+                sh 'git remote set-url origin https://jokoss92:${GITHUB_PAT}@github.com/jokoss92/k8s-manifest.git'
+                sh 'git push origin main'
             }
         }
     }
