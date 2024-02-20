@@ -4,17 +4,17 @@ pipeline {
         NOTIF = credentials('notif-discord')
     }
     stages {
+        environment {
+            GITHUB_PAT = credentials('github-account')
+            }
         stage('Clone Repository'){
             steps {
                 echo 'Clone repository'
                 sh 'rm -rf k8s-manifest'
-                sh 'git clone https://github.com/jokoss92/k8s-manifest.git'
+                sh 'git clone https://${GITHUB_PAT}@github.com/jokoss92/k8s-manifest.git'
             }
         }
         stage('Update Git'){
-            environment {
-                GITHUB_PAT = credentials('github-account')
-            }
             steps {
                 echo 'Update Git'
                 sh 'cat deployment.yml'
@@ -24,8 +24,8 @@ pipeline {
                 sh 'git config user.name "Joko Sarjono S"'
                 sh 'git add .'
                 sh 'git commit -m "Done by Jenkins Job change manifest ${DOCKERTAG}"'
-                sh 'git remote set-url origin https://jokoss92:${GITHUB_PAT}@github.com/jokoss92/k8s-manifest.git'
-                sh 'git push https://jokoss92:${GITHUB_PAT}@github.com/jokoss92/k8s-manifest.git HEAD:main'
+                sh 'git remote set-url origin https://${GITHUB_PAT}@github.com/jokoss92/k8s-manifest.git'
+                sh 'git push https://${GITHUB_PAT}@github.com/jokoss92/k8s-manifest.git HEAD:main'
             }
         }
     }
